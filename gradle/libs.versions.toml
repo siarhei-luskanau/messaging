@@ -1,10 +1,21 @@
 [versions]
+halcyon = "1.0.0"
+java-languageVersion = "21"
+javax-jaxb = "2.3.1"
 kotlin = "2.0.21"
 ktlint = "1.4.0"
+rocks-xmpp = "0.8.2"
+sun-jaxb-core = "2.3.0.1"
 
 [libraries]
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+halcyon-core = { module = "tigase.halcyon:halcyon-core", version.ref = "halcyon" }
+javax-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 ktlint-cli = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
+rocks-xmpp-core-client = { module = "rocks.xmpp:xmpp-core-client", version.ref = "rocks-xmpp" }
+rocks-xmpp-extensions-client = { module = "rocks.xmpp:xmpp-extensions-client", version.ref = "rocks-xmpp" }
+sun-jaxb-core = { module = "com.sun.xml.bind:jaxb-core", version.ref = "sun-jaxb-core" }
+sun-jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "javax-jaxb" }
 
 [plugins]
-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

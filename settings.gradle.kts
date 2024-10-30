@@ -1,7 +1,9 @@
 rootProject.name = "Messaging"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include()
+include(
+    "shared:sharedCommon"
+)
 
 pluginManagement {
     // includeBuild("convention-plugin-multiplatform")
@@ -16,5 +18,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://maven-repo.tigase.org/repository/release/")
     }
 }

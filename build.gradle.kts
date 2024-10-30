@@ -1,6 +1,7 @@
 @file:Suppress("PropertyName")
 
 import java.io.ByteArrayOutputStream
+import java.time.Duration
 import java.util.Properties
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -24,6 +25,30 @@ tasks.register("ciLint") {
 tasks.register("ciUnitTest") {
     group = CI_GRADLE
     doLast {
+        // Stop the running container
+        runCatching { runExec(listOf("docker", "stop", "ejabberd")) }
+
+        // Stop the running container
+        runCatching { runExec(listOf("docker", "rm", "-f", "ejabberd")) }
+
+        // Start ejabberd in a new container
+        runExec(
+            listOf(
+                "docker",
+                "run",
+                "--name",
+                "ejabberd",
+                "-d",
+                "-p",
+                "5222:5222",
+                "ghcr.io/processone/ejabberd"
+            )
+        )
+
+        // Wait for ejabberd to start
+        Thread.sleep(Duration.ofSeconds(3).toMillis())
+
+        // Register the administrator account
         runExec(
             listOf(
                 "docker",
@@ -36,6 +61,11 @@ tasks.register("ciUnitTest") {
                 "passw0rd"
             )
         )
+
+        // run unit tests
+        gradlew("test")
+
+        // Check ejabberd log files
         // runExec(listOf("docker", "exec", "ejabberd", "tail", "-f", "logs/ejabberd.log"))
     }
 }

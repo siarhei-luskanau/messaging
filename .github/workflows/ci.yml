@@ -36,7 +36,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-
     steps:
 
       - uses: actions/checkout@v4
@@ -47,12 +46,6 @@ jobs:
           brew install docker
           docker run --help
 
-      - name: Start ejabberd in a new container
-        run: docker run --name ejabberd -d -p 5222:5222 ghcr.io/processone/ejabberd
-
       - uses: gradle/actions/setup-gradle@v4
 
       - run: ./gradlew ciUnitTest --stacktrace
-
-      - name: Stop the running container
-        run: docker stop ejabberd
