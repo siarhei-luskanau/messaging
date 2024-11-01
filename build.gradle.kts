@@ -22,7 +22,7 @@ tasks.register("ciLint") {
     }
 }
 
-tasks.register("ciUnitTest") {
+tasks.register("ciEjabberdUnitTest") {
     group = CI_GRADLE
     doLast {
         // Stop the running container
@@ -45,7 +45,7 @@ tasks.register("ciUnitTest") {
             )
         )
 
-        // Wait for ejabberd to start
+        // Wait for server to start
         Thread.sleep(Duration.ofSeconds(3).toMillis())
 
         // Register the administrator account
@@ -67,6 +67,40 @@ tasks.register("ciUnitTest") {
 
         // Check ejabberd log files
         // runExec(listOf("docker", "exec", "ejabberd", "tail", "-f", "logs/ejabberd.log"))
+    }
+}
+
+tasks.register("ciTigaseUnitTest") {
+    group = CI_GRADLE
+    doLast {
+        // Stop the running container
+        runCatching { runExec(listOf("docker", "stop", "tigase-server")) }
+
+        // Stop the running container
+        runCatching { runExec(listOf("docker", "rm", "-f", "tigase-server")) }
+
+        // Start ejabberd in a new container
+        Thread {
+            runExec(
+                listOf(
+                    "docker",
+                    "run",
+                    "--name",
+                    "tigase-server",
+                    "-p",
+                    "8080:8080",
+                    "-p",
+                    "5222:5222",
+                    "tigase/tigase-xmpp-server"
+                )
+            )
+        }.start()
+
+        // Wait for server to start
+        Thread.sleep(Duration.ofSeconds(3).toMillis())
+
+        // run unit tests
+        gradlew("test")
     }
 }
 
