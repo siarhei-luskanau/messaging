@@ -6,7 +6,7 @@ include(
 )
 
 pluginManagement {
-    // includeBuild("convention-plugin-multiplatform")
+    includeBuild("convention-plugin-multiplatform")
     repositories {
         google()
         gradlePluginPortal()

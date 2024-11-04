@@ -63,7 +63,7 @@ tasks.register("ciEjabberdUnitTest") {
         )
 
         // run unit tests
-        gradlew("test")
+        gradlew("jvmTest")
 
         // Check ejabberd log files
         // runExec(listOf("docker", "exec", "ejabberd", "tail", "-f", "logs/ejabberd.log"))
@@ -100,7 +100,7 @@ tasks.register("ciTigaseUnitTest") {
         Thread.sleep(Duration.ofSeconds(3).toMillis())
 
         // run unit tests
-        gradlew("test")
+        gradlew("jvmTest")
     }
 }
 
