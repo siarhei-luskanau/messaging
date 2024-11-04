@@ -3,7 +3,7 @@ package messaging
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import rocks.xmpp.core.net.client.SocketConnectionConfiguration
+import rocks.xmpp.core.net.client.TcpConnectionConfiguration
 import rocks.xmpp.core.session.XmppClient
 import tigase.halcyon.core.builder.createHalcyon
 import tigase.halcyon.core.builder.socketConnector
@@ -54,7 +54,7 @@ class MessagingTest {
             "unable to find valid certification path to requested target"
     )
     fun rocksXmppTest() {
-        val tcpConfiguration = SocketConnectionConfiguration.Builder()
+        val tcpConfiguration = TcpConnectionConfiguration.builder()
             .hostname("127.0.0.1")
             .port(5222)
             .build()
