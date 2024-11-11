@@ -15,7 +15,7 @@ koin = "4.0.0"
 koin-ksp = "2.0.0-Beta1"
 kotlin = "2.0.21"
 kotlinx-coroutines = "1.9.0"
-ktlint = "1.4.0"
+ktlint = "1.4.1"
 rocks-xmpp = "0.9.1"
 sun-jaxb = "4.0.5"
 
