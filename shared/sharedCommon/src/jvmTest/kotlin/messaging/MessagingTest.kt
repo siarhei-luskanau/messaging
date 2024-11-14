@@ -3,8 +3,14 @@ package messaging
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import rocks.xmpp.core.net.client.TcpConnectionConfiguration
-import rocks.xmpp.core.session.XmppClient
+import org.jivesoftware.smack.AbstractXMPPConnection
+import org.jivesoftware.smack.ConnectionConfiguration
+import org.jivesoftware.smack.debugger.SmackDebugger
+import org.jivesoftware.smack.packet.TopLevelStreamElement
+import org.jivesoftware.smack.tcp.XMPPTCPConnection
+import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
+import org.jivesoftware.smack.util.TLSUtils.PROTO_TLSV1_2
+import org.jxmpp.jid.EntityFullJid
 import tigase.halcyon.core.builder.createHalcyon
 import tigase.halcyon.core.builder.socketConnector
 import tigase.halcyon.core.xmpp.modules.PingModule
@@ -19,13 +25,55 @@ class MessagingTest {
     }
 
     @Test
-    @Ignore("tigase.halcyon.core.connector.ConnectorException: Unexpected stop!")
-    fun halcyonTest() {
-        val user = "admin"
-        val password = "passw0rd"
+    @Ignore("smackTest")
+    fun smackTest() {
+        val config: XMPPTCPConnectionConfiguration = XMPPTCPConnectionConfiguration.builder()
+            .setUsernameAndPassword(USER, PASSWORD)
+            .setXmppDomain("localhost")
+            .setResource("Android_Client")
+            .setHost("localhost")
+            .setPort(5222)
+            .setEnabledSSLProtocols(arrayOf(PROTO_TLSV1_2))
+            .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
+            .setHostnameVerifier { _, _ -> true }
+            .setDnssecMode(ConnectionConfiguration.DnssecMode.disabled)
+            .setDebuggerFactory { connection ->
+                object : SmackDebugger(connection) {
+                    override fun userHasLogged(user: EntityFullJid?) {
+                        println("userHasLogged: $user")
+                    }
+                    override fun outgoingStreamSink(outgoingCharSequence: CharSequence?) {
+                        println("outgoingStreamSink: $outgoingCharSequence")
+                    }
+                    override fun incomingStreamSink(incomingCharSequence: CharSequence?) {
+                        println("incomingStreamSink: $incomingCharSequence")
+                    }
+                    override fun onIncomingStreamElement(streamElement: TopLevelStreamElement?) {
+                        println("onIncomingStreamElement: $streamElement")
+                    }
+                    override fun onOutgoingStreamElement(streamElement: TopLevelStreamElement?) {
+                        println("onOutgoingStreamElement: $streamElement")
+                    }
+                }
+            }
+//            .setSslContextFactory {
+//                SSLContext
+//            }
+            .build()
+
+        val connection: AbstractXMPPConnection = XMPPTCPConnection(config)
+        connection.connect()
+        connection.login()
+    }
+
+    @Test
+    @Ignore("tigaseHalcyonTest")
+    fun tigaseHalcyonTest() {
+        val user = USER
+        val password = PASSWORD
         val halcyon = createHalcyon {
             socketConnector {
-                hostname = "127.0.0.1"
+                hostname = "localhost"
                 port = 5222
             }
             auth {
@@ -36,7 +84,7 @@ class MessagingTest {
         halcyon.connectAndWait()
 
         halcyon.getModule(PingModule)
-            .ping("tigase.org".toJID())
+            .ping("localhost".toJID())
             .response { result ->
                 result.onSuccess { pong -> println("Pong: ${pong.time}ms") }
                 result.onFailure { error -> println("Error $error") }
@@ -47,19 +95,8 @@ class MessagingTest {
         halcyon.disconnect()
     }
 
-    @Test
-    @Ignore(
-        "javax.net.ssl.SSLHandshakeException: PKIX path building failed: " +
-            "sun.security.provider.certpath.SunCertPathBuilderException: " +
-            "unable to find valid certification path to requested target"
-    )
-    fun rocksXmppTest() {
-        val tcpConfiguration = TcpConnectionConfiguration.builder()
-            .hostname("127.0.0.1")
-            .port(5222)
-            .build()
-        val xmppClient = XmppClient.create("localhost", tcpConfiguration)
-        xmppClient.connect()
-        xmppClient.loginAnonymously()
+    companion object {
+        private const val USER = "admin"
+        private const val PASSWORD = "passw0rd"
     }
 }

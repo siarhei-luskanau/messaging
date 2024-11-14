@@ -5,24 +5,21 @@ build-android-minSdk = "24"
 build-android-targetSdk = "35"
 build-javaVersion = "VERSION_21"
 build-jvmTarget = "21"
-compose = "1.7.0"
+compose = "1.7.1"
 google-ksp = "2.0.21-1.0.27"
 halcyon = "1.0.0"
-javax-jaxb = "2.3.1"
-jetbrains-lifecycle = "2.8.3"
+jetbrains-lifecycle = "2.8.4"
 jetbrains-navigation = "2.8.0-alpha10"
 koin = "4.0.0"
 koin-ksp = "2.0.0-Beta1"
 kotlin = "2.0.21"
 kotlinx-coroutines = "1.9.0"
 ktlint = "1.4.1"
-rocks-xmpp = "0.9.1"
-sun-jaxb = "4.0.5"
+smack = "4.4.8"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 halcyon-core = { module = "tigase.halcyon:halcyon-core", version.ref = "halcyon" }
-javax-jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "javax-jaxb" }
 jetbrains-compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 jetbrains-compose-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
@@ -34,10 +31,8 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 ktlint-cli = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
-rocks-xmpp-core-client = { module = "rocks.xmpp:xmpp-core-client", version.ref = "rocks-xmpp" }
-rocks-xmpp-extensions-client = { module = "rocks.xmpp:xmpp-extensions-client", version.ref = "rocks-xmpp" }
-sun-jaxb-core = { module = "com.sun.xml.bind:jaxb-core", version.ref = "sun-jaxb" }
-sun-jaxb-impl = { module = "com.sun.xml.bind:jaxb-impl", version.ref = "sun-jaxb" }
+smack-tcp = { module = "org.igniterealtime.smack:smack-tcp", version.ref = "smack" }
+smack-xmlparser-xpp3 = { module = "org.igniterealtime.smack:smack-xmlparser-xpp3", version.ref = "smack" }
 
 [plugins]
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
