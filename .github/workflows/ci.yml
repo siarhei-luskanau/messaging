@@ -40,12 +40,11 @@ jobs:
 
 
   UnitTest:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         server: [ Ejabberd, Tigase ]
-        os: [ ubuntu-latest ]
     steps:
 
       - uses: actions/checkout@v4
@@ -54,12 +53,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
-
-      - name: Install docker
-        if: contains(matrix.os, 'macos')
-        run: |
-          brew install docker
-          docker run --help
 
       - uses: gradle/actions/setup-gradle@v4
 

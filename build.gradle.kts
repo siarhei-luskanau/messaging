@@ -1,6 +1,5 @@
 @file:Suppress("PropertyName")
 
-import java.io.ByteArrayOutputStream
 import java.time.Duration
 import java.util.Properties
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -31,9 +30,9 @@ tasks.register("ciEjabberdUnitTest") {
             workingDirectory = File(project.rootDir, "ejabberd")
         )
 
-        // Start ejabberd in a new container
+        // Start server in a new container
         runExec(
-            listOf("docker", "compose", "up", "--detach"),
+            listOf("docker", "compose", "up", "-d"),
             workingDirectory = File(project.rootDir, "ejabberd")
         )
 
@@ -49,61 +48,42 @@ tasks.register("ciTigaseUnitTest") {
     group = CI_GRADLE
     doLast {
         // Stop the running container
-        runCatching { runExec(listOf("docker", "stop", "tigase-server")) }
+        runExec(
+            listOf("docker", "compose", "down", "-v"),
+            workingDirectory = File(project.rootDir, "tigase")
+        )
 
-        // Stop the running container
-        runCatching { runExec(listOf("docker", "rm", "-f", "tigase-server")) }
-
-        // Start ejabberd in a new container
-        Thread {
-            runExec(
-                listOf(
-                    "docker",
-                    "run",
-                    "--name",
-                    "tigase-server",
-                    "-p",
-                    "8080:8080",
-                    "-p",
-                    "5222:5222",
-                    "tigase/tigase-xmpp-server"
-                )
-            )
-        }.start()
+        // Start server in a new container
+        runExec(
+            listOf("docker", "compose", "up", "-d"),
+            workingDirectory = File(project.rootDir, "tigase")
+        )
 
         // Wait for server to start
         Thread.sleep(Duration.ofSeconds(3).toMillis())
 
         // run unit tests
-        gradlew("jvmTest")
+        runCatching { gradlew("jvmTest") }
     }
 }
 
-fun runExec(commands: List<String>, workingDirectory: File? = null): String =
-    object : ByteArrayOutputStream() {
-        override fun write(p0: ByteArray, p1: Int, p2: Int) {
-            print(String(p0, p1, p2))
-            super.write(p0, p1, p2)
-        }
-    }.let { resultOutputStream ->
-        exec {
-            if (System.getenv("JAVA_HOME") == null) {
-                System.getProperty("java.home")?.let { javaHome ->
-                    environment = environment.toMutableMap().apply {
-                        put("JAVA_HOME", javaHome)
-                    }
+fun runExec(commands: List<String>, workingDirectory: File? = null) {
+    providers.exec {
+        if (System.getenv("JAVA_HOME") == null) {
+            System.getProperty("java.home")?.let { javaHome ->
+                environment = environment.toMutableMap().apply {
+                    put("JAVA_HOME", javaHome)
                 }
             }
-            commandLine = commands
-            workingDirectory?.also { workingDir = workingDirectory }
-            standardOutput = resultOutputStream
-            println("commandLine: ${this.commandLine.joinToString(separator = " ")}")
-        }.apply { println("ExecResult: $this") }
-        String(resultOutputStream.toByteArray())
-    }
+        }
+        commandLine = commands
+        workingDirectory?.also { workingDir = workingDirectory }
+        println("commandLine: ${this.commandLine.joinToString(separator = " ")}")
+    }.apply { println("ExecResult: ${this.result.get()}") }
+}
 
 fun gradlew(vararg tasks: String, addToSystemProperties: Map<String, String>? = null) {
-    exec {
+    providers.exec {
         executable = File(
             project.rootDir,
             if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew"
@@ -145,5 +125,5 @@ fun gradlew(vararg tasks: String, addToSystemProperties: Map<String, String>? = 
             }
         }
         println("commandLine: ${this.commandLine}")
-    }.apply { println("ExecResult: $this") }
+    }.apply { println("ExecResult: ${this.result.get()}") }
 }

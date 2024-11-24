@@ -1,7 +1,7 @@
 services:
-  main:
+  ejabberd:
     image: ejabberd/ecs
-    # platform: linux/amd64
+    platform: linux/amd64
     container_name: ejabberd
     ports:
       - "5222:5222"
@@ -22,4 +22,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.21.0.0/16  # trusted ip range; localhost clients use this subnet for ejabberd connection 
+        - subnet: 172.21.0.0/16  # trusted ip range; localhost clients use this subnet for ejabberd connection

@@ -1,0 +1,17 @@
+services:
+  tigase:
+    image: tigase/tigase-xmpp-server
+    container_name: tigase
+    ports:
+      - "8080:8080"
+      - "5222:5222"
+    networks:
+      - tigase-network
+    user: root
+
+networks:
+  tigase-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
