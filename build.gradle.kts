@@ -1,6 +1,5 @@
 @file:Suppress("PropertyName")
 
-import java.io.ByteArrayOutputStream
 import java.time.Duration
 import java.util.Properties
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -104,13 +103,8 @@ tasks.register("ciTigaseUnitTest") {
     }
 }
 
-fun runExec(commands: List<String>): String = object : ByteArrayOutputStream() {
-    override fun write(p0: ByteArray, p1: Int, p2: Int) {
-        print(String(p0, p1, p2))
-        super.write(p0, p1, p2)
-    }
-}.let { resultOutputStream ->
-    exec {
+fun runExec(commands: List<String>) {
+    providers.exec {
         if (System.getenv("JAVA_HOME") == null) {
             System.getProperty("java.home")?.let { javaHome ->
                 environment = environment.toMutableMap().apply {
@@ -119,14 +113,12 @@ fun runExec(commands: List<String>): String = object : ByteArrayOutputStream() {
             }
         }
         commandLine = commands
-        standardOutput = resultOutputStream
         println("commandLine: ${this.commandLine.joinToString(separator = " ")}")
-    }.apply { println("ExecResult: $this") }
-    String(resultOutputStream.toByteArray())
+    }.apply { println("ExecResult: ${this.result.get()}") }
 }
 
 fun gradlew(vararg tasks: String, addToSystemProperties: Map<String, String>? = null) {
-    exec {
+    providers.exec {
         executable = File(
             project.rootDir,
             if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew"
@@ -168,5 +160,5 @@ fun gradlew(vararg tasks: String, addToSystemProperties: Map<String, String>? = 
             }
         }
         println("commandLine: ${this.commandLine}")
-    }.apply { println("ExecResult: $this") }
+    }.apply { println("ExecResult: ${this.result.get()}") }
 }
