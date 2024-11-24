@@ -31,6 +31,8 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 ktlint-cli = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
+smack-java8-full = { module = "org.igniterealtime.smack:smack-java8-full", version.ref = "smack" }
+smack-sasl-provided = { module = "org.igniterealtime.smack:smack-sasl-provided", version.ref = "smack" }
 smack-tcp = { module = "org.igniterealtime.smack:smack-tcp", version.ref = "smack" }
 smack-xmlparser-xpp3 = { module = "org.igniterealtime.smack:smack-xmlparser-xpp3", version.ref = "smack" }
 
