@@ -15,6 +15,7 @@ koin-ksp = "2.0.0-Beta2"
 kotlin = "2.1.0"
 kotlinx-coroutines = "1.9.0"
 ktlint = "1.5.0"
+robolectric = "4.14.1"
 smack = "4.4.8"
 
 [libraries]
@@ -30,12 +31,10 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-ksp" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 ktlint-cli = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint" }
-smack-java8-full = { module = "org.igniterealtime.smack:smack-java8-full", version.ref = "smack" }
-smack-sasl-provided = { module = "org.igniterealtime.smack:smack-sasl-provided", version.ref = "smack" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+smack-android-extensions = { module = "org.igniterealtime.smack:smack-android-extensions", version.ref = "smack" }
 smack-tcp = { module = "org.igniterealtime.smack:smack-tcp", version.ref = "smack" }
-smack-xmlparser-xpp3 = { module = "org.igniterealtime.smack:smack-xmlparser-xpp3", version.ref = "smack" }
 
 [plugins]
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }

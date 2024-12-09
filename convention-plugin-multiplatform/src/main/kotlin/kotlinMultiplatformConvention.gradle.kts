@@ -33,10 +33,7 @@ kotlin {
         }
     }
 
-    jvm()
-
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
@@ -70,9 +67,8 @@ kotlin {
             implementation(compose.uiTooling)
         }
 
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.findLibrary("kotlinx-coroutines-swing").get())
+        androidUnitTest.dependencies {
+            implementation(libs.findLibrary("robolectric").get())
         }
 
         iosMain.dependencies {

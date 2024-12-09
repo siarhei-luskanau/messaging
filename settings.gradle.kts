@@ -2,7 +2,9 @@ rootProject.name = "Messaging"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(
-    "shared:sharedCommon"
+    "shared:sharedXmppApi",
+    "shared:sharedXmppHalcyon",
+    "shared:sharedXmppSmack"
 )
 
 pluginManagement {
