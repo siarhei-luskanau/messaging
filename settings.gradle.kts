@@ -18,6 +18,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://maven-repo.tigase.org/repository/release/")
+        maven("https://maven-repo.tigase.org/repository/snapshot")
     }
 }
