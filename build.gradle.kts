@@ -64,7 +64,7 @@ tasks.register("ciTigaseUnitTest") {
         Thread.sleep(Duration.ofSeconds(3).toMillis())
 
         // run unit tests
-        // gradlew("clean", "testDebugUnitTest")
+        gradlew("clean", "testDebugUnitTest")
         // gradlew("cleanIosSimulatorArm64Test", "iosSimulatorArm64Test")
     }
 }
