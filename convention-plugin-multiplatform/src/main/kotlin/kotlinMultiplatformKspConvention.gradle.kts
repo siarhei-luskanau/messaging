@@ -19,9 +19,6 @@ dependencies {
     add("kspCommonMainMetadata", libs.findLibrary("koin-ksp-compiler").get())
     add("kspIosArm64", libs.findLibrary("koin-ksp-compiler").get())
     add("kspIosSimulatorArm64", libs.findLibrary("koin-ksp-compiler").get())
-    // add("kspIosX64", libs.findLibrary("koin-ksp-compiler").get())
-    // add("kspJs", libs.findLibrary("koin-ksp-compiler").get())
-    add("kspJvm", libs.findLibrary("koin-ksp-compiler").get())
 }
 
 ksp {

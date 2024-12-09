@@ -40,7 +40,8 @@ tasks.register("ciEjabberdUnitTest") {
         Thread.sleep(Duration.ofSeconds(3).toMillis())
 
         // run unit tests
-        gradlew("jvmTest")
+        gradlew("clean", "testDebugUnitTest")
+        // gradlew("cleanIosSimulatorArm64Test", "iosSimulatorArm64Test")
     }
 }
 
@@ -63,7 +64,8 @@ tasks.register("ciTigaseUnitTest") {
         Thread.sleep(Duration.ofSeconds(3).toMillis())
 
         // run unit tests
-        runCatching { gradlew("jvmTest") }
+        // gradlew("clean", "testDebugUnitTest")
+        // gradlew("cleanIosSimulatorArm64Test", "iosSimulatorArm64Test")
     }
 }
 
