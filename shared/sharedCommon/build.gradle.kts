@@ -1,6 +1,5 @@
 plugins {
-    id("kotlinMultiplatformConvention")
-    alias(libs.plugins.google.ksp)
+    id("kotlinMultiplatformKspConvention")
 }
 
 kotlin {
@@ -17,12 +16,4 @@ kotlin {
 
 android {
     namespace = "shared.common"
-}
-
-dependencies {
-    ksp(libs.koin.ksp.compiler)
-}
-
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
 }
