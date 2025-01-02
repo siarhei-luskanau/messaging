@@ -5,7 +5,10 @@ build-android-minSdk = "24"
 build-android-targetSdk = "35"
 build-javaVersion = "VERSION_21"
 build-jvmTarget = "21"
+buildConfig = "5.5.1"
 compose = "1.7.3"
+detekt = "1.23.7"
+espresso = "3.6.1"
 google-ksp = "2.1.0-1.0.29"
 halcyon = "1.0.1-SNAPSHOT"
 jetbrains-lifecycle = "2.8.4"
@@ -20,6 +23,7 @@ smack = "4.4.8"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
 google-ksp-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "google-ksp" }
 halcyon-core = { module = "tigase.halcyon:halcyon-core", version.ref = "halcyon" }
 jetbrains-compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
@@ -37,4 +41,12 @@ smack-android-extensions = { module = "org.igniterealtime.smack:smack-android-ex
 smack-tcp = { module = "org.igniterealtime.smack:smack-tcp", version.ref = "smack" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

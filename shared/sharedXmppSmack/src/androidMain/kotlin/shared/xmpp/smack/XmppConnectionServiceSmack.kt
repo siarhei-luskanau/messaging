@@ -10,24 +10,26 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration
 import org.jxmpp.jid.EntityFullJid
 import org.jxmpp.jid.parts.Resourcepart
-import shared.xmpp.api.XmppService
+import org.koin.core.annotation.Single
+import shared.xmpp.api.XMPP_SERVER_ADDRESS
+import shared.xmpp.api.XMPP_SERVER_PORT
+import shared.xmpp.api.XmppConnectionService
 
-class XmppServiceSmack(
-    private val xmppHost: String,
-    private val xmppPort: Int,
-    private val xmppDomain: String
-) : XmppService {
+@Single
+internal class XmppConnectionServiceSmack : XmppConnectionService {
 
     var connection: AbstractXMPPConnection? = null
 
-    override fun connect(username: String, password: String) {
+    override suspend fun isConnected(): Boolean = connection?.isConnected == true
+
+    override suspend fun connect(username: String, password: String, domain: String) {
         connection?.disconnect()
 
         SASLAuthentication.registerSASLMechanism(SASLPlainMechanism())
         val config: XMPPTCPConnectionConfiguration = XMPPTCPConnectionConfiguration.builder()
-            .setXmppDomain(xmppDomain)
-            .setHost(xmppHost)
-            .setPort(xmppPort)
+            .setXmppDomain(domain)
+            .setHost(XMPP_SERVER_ADDRESS)
+            .setPort(XMPP_SERVER_PORT)
             .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
             .setHostnameVerifier { _, _ -> true }
             .setDebuggerFactory { connection ->
@@ -57,7 +59,7 @@ class XmppServiceSmack(
         }
     }
 
-    override fun disconnect() {
+    override suspend fun disconnect() {
         connection?.disconnect()
         connection?.instantShutdown()
     }
