@@ -55,7 +55,7 @@ tasks.register("ciTigaseUnitTest") {
     group = CI_GRADLE
     doLast {
         launchOnTigase {
-            // launchUnitTest()
+            launchUnitTest()
         }
     }
 }
@@ -64,7 +64,7 @@ tasks.register("ciTigaseAndroidTest") {
     group = CI_GRADLE
     doLast {
         launchOnTigase {
-            // launchAndroidTest()
+            launchAndroidTest()
         }
     }
 }
