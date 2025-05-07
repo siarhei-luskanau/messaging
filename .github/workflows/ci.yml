@@ -40,6 +40,67 @@ jobs:
 
 
 
+  Tests:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        gradle-tasks: [
+          "jvmTest",
+          "testDebugUnitTest",
+          "jsBrowserTest"
+        ]
+        os: [ ubuntu-latest ]
+        experimental: [ false ]
+        emulator: [ false ]
+        include:
+          - gradle-tasks: "managedVirtualDeviceDebugAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect"
+            os: ubuntu-latest
+            experimental: false
+            emulator: true
+          - gradle-tasks: "iosSimulatorArm64Test"
+            os: macos-13
+            experimental: false
+            emulator: false
+          - gradle-tasks: "iosSimulatorArm64Test"
+            os: macos-latest
+            experimental: false
+            emulator: false
+    env:
+      XMPP_DOMAIN: localhost
+      XMPP_SERVER_ADDRESS: 127.0.0.1
+      XMPP_SERVER_PORT: 5222
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Enable KVM group perms
+        if: matrix.emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew ciSdkManagerLicenses --stacktrace
+        if: matrix.emulator
+
+      - name: down ejabberd
+        run: |
+          cd ejabberd
+          docker compose up -d
+
+      - run: ./gradlew clean ${{ matrix.gradle-tasks }} -DXMPP_DOMAIN=${{ env.XMPP_DOMAIN }} -DXMPP_SERVER_ADDRESS=${{ env.XMPP_SERVER_ADDRESS }} -DXMPP_SERVER_PORT=${{ env.XMPP_SERVER_PORT }} --stacktrace
+
+
+
   UnitTest:
     runs-on: ubuntu-latest
     strategy:
