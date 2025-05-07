@@ -1,8 +1,8 @@
 [versions]
 agp = "8.10.0"
-build-android-compileSdk = "35"
+build-android-compileSdk = "36"
 build-android-minSdk = "24"
-build-android-targetSdk = "35"
+build-android-targetSdk = "36"
 build-javaVersion = "VERSION_21"
 build-jvmTarget = "21"
 buildConfig = "5.6.5"
